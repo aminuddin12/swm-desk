@@ -1,0 +1,23 @@
+module components
+SWMIcon 1.0 display/SWMIcon.qml
+Badge 1.0 display/Badge.qml
+Avatar 1.0 display/Avatar.qml
+SectionTitle 1.0 display/SectionTitle.qml
+Divider 1.0 display/Divider.qml
+
+BaseCard 1.0 cards/BaseCard.qml
+CameraCard 1.0 cards/CameraCard.qml
+DeviceCard 1.0 cards/DeviceCard.qml
+StatusCard 1.0 cards/StatusCard.qml
+
+PrimaryButton 1.0 buttons/PrimaryButton.qml
+IconButton 1.0 buttons/IconButton.qml
+ToggleButton 1.0 buttons/ToggleButton.qml
+
+Surface 1.0 containers/Surface.qml
+FloatingPanel 1.0 containers/FloatingPanel.qml
+WorkspaceCanvas 1.0 containers/WorkspaceCanvas.qml
+
+Sidebar 1.0 navigation/Sidebar.qml
+SidebarItem 1.0 navigation/SidebarItem.qml
+TopBar 1.0 navigation/TopBar.qml

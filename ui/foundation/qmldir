@@ -1,0 +1,9 @@
+module foundation
+singleton SWMColors 1.0 SWMColors.qml
+singleton SWMTypography 1.0 SWMTypography.qml
+singleton SWMSpacing 1.0 SWMSpacing.qml
+singleton SWMRadius 1.0 SWMRadius.qml
+singleton SWMElevation 1.0 SWMElevation.qml
+singleton SWMMotion 1.0 SWMMotion.qml
+singleton SWMAccessibility 1.0 SWMAccessibility.qml
+singleton SWMInteraction 1.0 SWMInteraction.qml
