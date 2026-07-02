@@ -51,11 +51,11 @@ Item {
         if (pageName === "dashboard") {
             url = Qt.resolvedUrl("../pages/DashboardPage.qml");
         } else if (pageName === "studio") {
-            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+            url = Qt.resolvedUrl("../pages/StudioPage.qml");
         } else if (pageName === "library") {
-            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+            url = Qt.resolvedUrl("../pages/LibraryPage.qml");
         } else if (pageName === "store") {
-            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+            url = Qt.resolvedUrl("../pages/StorePage.qml");
         }
         
         if (url !== "") {
