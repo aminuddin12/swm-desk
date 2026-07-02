@@ -5,6 +5,9 @@
 #include "../logging/Logger.h"
 #include "../logging/LoggerFacade.h"
 #include "../../application/services/ServiceRegistry.h"
+#if defined(Q_OS_MAC)
+#include "../logging/sinks/MacStatusBarService.h"
+#endif
 
 std::shared_ptr<RuntimeContext> RuntimeBootstrap::bootstrap() {
     std::shared_ptr<IConfiguration> config = std::make_shared<Configuration>();
@@ -25,6 +28,13 @@ std::shared_ptr<RuntimeContext> RuntimeBootstrap::bootstrap() {
     
     loggerInstance->initialize();
     loggerInstance->start();
+    
+#if defined(Q_OS_MAC)
+    auto statusBar = std::make_shared<MacStatusBarService>(bus);
+    registry.registerService("MacStatusBarService", statusBar);
+    statusBar->initialize();
+    statusBar->start();
+#endif
     
     auto context = std::make_shared<RuntimeContext>(env, logger, bus);
     registry.registerService("RuntimeContext", context);

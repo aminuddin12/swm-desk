@@ -54,8 +54,8 @@ set(SRC_FILES
 
 if(APPLE)
     list(APPEND SRC_FILES
-        runtime/logging/sinks/MacStatusBarLogViewer.h
-        runtime/logging/sinks/MacStatusBarLogViewer.mm
+        runtime/logging/sinks/MacStatusBarService.h
+        runtime/logging/sinks/MacStatusBarService.mm
     )
     find_library(COCOA_LIBRARY Cocoa REQUIRED)
 endif()
@@ -63,7 +63,7 @@ endif()
 add_executable(SwDeskApp ${SRC_FILES})
 
 if(APPLE)
-    set_source_files_properties(runtime/logging/sinks/MacStatusBarLogViewer.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc")
+    set_source_files_properties(runtime/logging/sinks/MacStatusBarService.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc")
 endif()
 
 target_link_libraries(SwDeskApp PRIVATE

@@ -1,7 +1,6 @@
 #include "AppBootstrap.h"
 #include "../runtime/bootstrap/RuntimeBootstrap.h"
 #include "../application/services/ServiceRegistry.h"
-#include "../runtime/logging/sinks/MacStatusBarLogViewer.h"
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QUrl>
@@ -26,11 +25,6 @@ void AppBootstrap::bootstrap() {
     logger->info("Logger Ready", LogCategory::Runtime);
     logger->info("Configuration Loaded", LogCategory::Runtime);
     logger->info("UI Started", LogCategory::Runtime);
-    
-#if defined(Q_OS_MAC)
-    statusBarViewer = std::make_shared<MacStatusBarLogViewer>(context->getEventBus());
-    statusBarViewer->initialize();
-#endif
 
     QString appDir = QGuiApplication::applicationDirPath();
     qmlEngine.addImportPath(appDir + "/../ui");
