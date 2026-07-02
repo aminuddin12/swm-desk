@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QQmlApplicationEngine>
+#include <memory>
+
+class MacStatusBarLogViewer;
 
 class AppBootstrap : public QObject {
     Q_OBJECT
@@ -17,6 +20,7 @@ public:
 
 private:
     QQmlApplicationEngine qmlEngine;
+    std::shared_ptr<MacStatusBarLogViewer> statusBarViewer;
 };
 
-#endif // APPBOOTSTRAP_H
+#endif

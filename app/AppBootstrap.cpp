@@ -1,4 +1,7 @@
 #include "AppBootstrap.h"
+#include "../runtime/bootstrap/RuntimeBootstrap.h"
+#include "../application/services/ServiceRegistry.h"
+#include "../runtime/logging/sinks/MacStatusBarLogViewer.h"
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QUrl>
@@ -15,15 +18,22 @@ QString AppBootstrap::getAppDir() const {
 }
 
 void AppBootstrap::bootstrap() {
-    // Basic Runtime Setup
+    auto context = RuntimeBootstrap::bootstrap();
+    auto logger = context->getLogger();
+    
+    logger->info("Application Started", LogCategory::Runtime);
+    logger->info("Runtime Initialized", LogCategory::Runtime);
+    logger->info("Logger Ready", LogCategory::Runtime);
+    logger->info("Configuration Loaded", LogCategory::Runtime);
+    logger->info("UI Started", LogCategory::Runtime);
+    
+#if defined(Q_OS_MAC)
+    statusBarViewer = std::make_shared<MacStatusBarLogViewer>(context->getEventBus());
+    statusBarViewer->initialize();
+#endif
+
     QString appDir = QGuiApplication::applicationDirPath();
-    
-    // Register UI Framework Modules
     qmlEngine.addImportPath(appDir + "/../ui");
-    
-    // Bind bootstrap for C++ hooks if needed in the future
     qmlEngine.rootContext()->setContextProperty("bootstrap", this);
-    
-    // Launch PlaygroundApp EXCLUSIVELY
     qmlEngine.load(QUrl::fromLocalFile(appDir + "/../ui/playground/PlaygroundApp.qml"));
 }
