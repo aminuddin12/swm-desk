@@ -1,7 +1,9 @@
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Effects
 import foundation
 import theme
+import components
 
 Item {
     id: root
@@ -9,23 +11,22 @@ Item {
     property int padding: SWMSpacing.space24
     property bool hoverable: false
     property color backgroundColor: ThemeEngine.surface
+    property string title: ""
+    property bool showSettings: true
     
-    // Allow children
     default property alias content: container.data
     
-    implicitWidth: container.implicitWidth + (padding * 2)
-    implicitHeight: container.implicitHeight + (padding * 2)
+    implicitWidth: mainLayout.implicitWidth + (padding * 2)
+    implicitHeight: mainLayout.implicitHeight + (padding * 2)
     
     Rectangle {
         id: bgRect
         anchors.fill: parent
         color: root.backgroundColor
         radius: SWMRadius.radius2xl
-        
         border.color: ThemeEngine.border
         border.width: 1
         
-        // Hover scaling effect for premium feel
         scale: (root.hoverable && mouseArea.containsMouse) ? 1.01 : 1.0
         
         Behavior on scale {
@@ -33,12 +34,11 @@ Item {
         }
     }
     
-    // Soft Premium Shadow
     MultiEffect {
         source: bgRect
         anchors.fill: bgRect
         shadowEnabled: ThemeEngine.mode === "Light"
-        shadowColor: "#0A000000" // 4% black
+        shadowColor: "#0A000000"
         shadowHorizontalOffset: 0
         shadowVerticalOffset: (root.hoverable && mouseArea.containsMouse) ? 16 : 8
         shadowBlur: (root.hoverable && mouseArea.containsMouse) ? 0.8 : 0.4
@@ -55,9 +55,53 @@ Item {
         acceptedButtons: Qt.NoButton
     }
     
-    Item {
-        id: container
+    ColumnLayout {
+        id: mainLayout
         anchors.fill: parent
         anchors.margins: root.padding
+        spacing: SWMSpacing.space16
+        
+        RowLayout {
+            Layout.fillWidth: true
+            visible: root.title !== ""
+            
+            Text {
+                text: root.title
+                font.family: SWMTypography.family
+                font.pixelSize: SWMTypography.h3
+                font.weight: SWMTypography.weightBold
+                color: ThemeEngine.textPrimary
+            }
+            
+            Item { Layout.fillWidth: true }
+            
+            RowLayout {
+                spacing: SWMSpacing.space12
+                visible: root.showSettings
+                
+                Rectangle {
+                    width: 1
+                    height: 20
+                    color: ThemeEngine.border
+                }
+                
+                SWMIcon {
+                    source: "file:///" + bootstrap.appDir + "/../resources/icons/settings.svg"
+                    size: 20
+                    color: ThemeEngine.primary
+                    
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                    }
+                }
+            }
+        }
+        
+        Item {
+            id: container
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
     }
 }

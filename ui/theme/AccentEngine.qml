@@ -5,8 +5,7 @@ import foundation
 QtObject {
     id: root
     
-    // Accents: "Blue", "Purple", "Orange", "Green", "Red", "Pink", "Teal"
-    property string currentAccent: "Purple"
+    property string currentAccent: "Green"
     
     readonly property color primary: {
         switch(currentAccent) {
@@ -21,7 +20,7 @@ QtObject {
     
     readonly property color primaryLight: {
         switch(currentAccent) {
-            case "Blue": return "#e0f2fe" // Light Blue
+            case "Blue": return "#e0f2fe"
             case "Red": return "#fee2e2"
             case "Green": return "#d1fae5"
             case "Orange": return "#fef3c7"

@@ -6,7 +6,7 @@ import theme
 Item {
     id: root
     
-    property string initialPage: "dashboard"
+    property string activeTab: "dashboard"
     
     StackView {
         id: stack
@@ -14,7 +14,6 @@ Item {
         
         initialItem: Qt.resolvedUrl("../pages/DashboardPage.qml")
         
-        // Custom transitions matching Figma-quality premium feel (Arc/Linear style)
         pushEnter: Transition {
             ParallelAnimation {
                 NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 220; easing.type: Easing.OutCubic }
@@ -43,10 +42,21 @@ Item {
     }
     
     function navigateTo(pageName) {
+        if (root.activeTab === pageName) {
+            return;
+        }
+        root.activeTab = pageName;
+        
         var url = "";
-        if (pageName === "dashboard") url = Qt.resolvedUrl("../pages/DashboardPage.qml");
-        else if (pageName === "live") url = Qt.resolvedUrl("../pages/DashboardPage.qml"); // placeholder
-        else if (pageName === "devices") url = Qt.resolvedUrl("../pages/DashboardPage.qml"); // placeholder
+        if (pageName === "dashboard") {
+            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+        } else if (pageName === "studio") {
+            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+        } else if (pageName === "library") {
+            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+        } else if (pageName === "store") {
+            url = Qt.resolvedUrl("../pages/DashboardPage.qml");
+        }
         
         if (url !== "") {
             stack.replace(url);

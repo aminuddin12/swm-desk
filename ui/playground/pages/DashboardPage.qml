@@ -4,91 +4,56 @@ import QtQuick.Controls.Basic
 import foundation
 import theme
 import components
-import "../models"
 
-Item {
+RowLayout {
     id: root
     
-    CamerasModel { id: camerasModel }
+    spacing: SWMSpacing.space24
     
-    GridLayout {
-        anchors.fill: parent
-        columns: 3
-        columnSpacing: SWMSpacing.space24
-        rowSpacing: SWMSpacing.space24
+    BaseCard {
+        title: "Preview"
+        showSettings: true
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.preferredWidth: 800
         
-        // LEFT PANEL (CCTVs & Door)
-        Column {
+        Rectangle {
+            anchors.fill: parent
+            color: ThemeEngine.isDark ? SWMColors.gray700 : SWMColors.gray100
+            radius: SWMRadius.radiusLg
+        }
+    }
+    
+    ColumnLayout {
+        spacing: SWMSpacing.space24
+        Layout.fillHeight: true
+        Layout.preferredWidth: 400
+        
+        BaseCard {
+            title: "Running Item"
+            showSettings: true
+            Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.preferredWidth: 320
-            spacing: SWMSpacing.space24
+            Layout.preferredHeight: 450
             
-            BaseCard {
-                width: parent.width
-                
-                Column {
-                    width: parent.width
-                    spacing: SWMSpacing.space16
-                    
-                    Row {
-                        width: parent.width
-                        Column {
-                            SectionTitle { text: "CCTVs" }
-                            Text { text: camerasModel.count + " Devices"; font.pixelSize: SWMTypography.caption; color: ThemeEngine.textSecondary }
-                        }
-                    }
-                    
-                    Repeater {
-                        model: camerasModel
-                        delegate: DeviceCard {
-                            width: parent.width
-                            title: model.title
-                            subtitle: model.subtitle
-                            
-                            Row {
-                                anchors.right: parent.right
-                                anchors.verticalCenter: parent.verticalCenter
-                                ToggleButton { checked: model.active }
-                            }
-                        }
-                    }
-                }
+            Rectangle {
+                anchors.fill: parent
+                color: ThemeEngine.isDark ? SWMColors.gray700 : SWMColors.gray100
+                radius: SWMRadius.radiusLg
             }
         }
         
-        // CENTER CANVAS (3D View)
-        WorkspaceCanvas {
+        BaseCard {
+            title: "Service"
+            showSettings: true
             Layout.fillWidth: true
             Layout.fillHeight: true
-        }
-        
-        // RIGHT PANEL
-        Column {
-            Layout.fillHeight: true
-            Layout.preferredWidth: 320
-            spacing: SWMSpacing.space24
+            Layout.preferredHeight: 300
             
-            BaseCard {
-                width: parent.width
-                Column {
-                    width: parent.width
-                    spacing: SWMSpacing.space16
-                    
-                    SectionTitle { text: "Lighting" }
-                    
-                    Rectangle {
-                        width: parent.width
-                        height: 120
-                        color: ThemeEngine.divider
-                        radius: SWMRadius.radiusLg
-                        SWMIcon {
-                            anchors.centerIn: parent
-                            source: "file:///" + bootstrap.appDir + "/../resources/icons/sun.svg"
-                            size: 48
-                            color: ThemeEngine.warning
-                        }
-                    }
-                }
+            Rectangle {
+                anchors.fill: parent
+                color: ThemeEngine.surface
+                radius: SWMRadius.radiusLg
             }
         }
     }

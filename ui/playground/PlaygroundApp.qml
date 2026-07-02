@@ -11,42 +11,36 @@ ApplicationWindow {
     width: 1400
     height: 900
     visible: true
-    title: "SWM Desk - Premium Playground"
+    title: "Dashboard | SWM Desk"
     
     color: ThemeEngine.background
     
-    RowLayout {
+    ColumnLayout {
         anchors.fill: parent
-        spacing: 0
+        anchors.margins: SWMSpacing.space32
+        spacing: SWMSpacing.space24
         
-        // SIDEBAR
-        Sidebar {
-            Layout.fillHeight: true
-            onNavigate: (page) => {
-                navController.navigateTo(page)
+        TopBar {
+            id: topBar
+            activeTab: navController.activeTab
+            onTabChanged: (tabName) => {
+                navController.navigateTo(tabName)
             }
         }
         
-        // MAIN WORKSPACE
-        ColumnLayout {
+        Text {
+            text: navController.activeTab.charAt(0).toUpperCase() + navController.activeTab.slice(1)
+            font.family: SWMTypography.family
+            font.pixelSize: SWMTypography.h1
+            font.weight: SWMTypography.weightBold
+            color: ThemeEngine.textPrimary
+            Layout.fillWidth: true
+        }
+        
+        Nav.NavigationController {
+            id: navController
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: SWMSpacing.space24
-            Layout.rightMargin: SWMSpacing.space32
-            
-            // TOP BAR
-            TopBar {
-                title: "Live 3D OfficeSpace View"
-                Layout.topMargin: SWMSpacing.space32
-            }
-            
-            // NAVIGATION AREA
-            Nav.NavigationController {
-                id: navController
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.bottomMargin: SWMSpacing.space32
-            }
         }
     }
 }

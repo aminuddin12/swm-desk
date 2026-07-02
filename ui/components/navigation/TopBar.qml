@@ -7,62 +7,154 @@ import components
 RowLayout {
     id: root
     
-    property string title: "Dashboard"
+    property string activeTab: "dashboard"
+    signal tabChanged(string tabName)
     
     Layout.fillWidth: true
-    Layout.preferredHeight: 64
+    Layout.preferredHeight: 80
     
-    spacing: SWMSpacing.space16
+    spacing: SWMSpacing.space24
     
-    Text {
-        text: root.title
-        font.family: SWMTypography.family
-        font.pixelSize: SWMTypography.h1
-        font.weight: SWMTypography.weightBold
-        color: ThemeEngine.textPrimary
+    RowLayout {
+        spacing: SWMSpacing.space12
         Layout.alignment: Qt.AlignVCenter
-    }
-    
-    Item { Layout.fillWidth: true } // Flexible spacer
-    
-    // Actions
-    IconButton {
-        iconSource: "file:///" + bootstrap.appDir + "/../resources/icons/" + (ThemeEngine.mode === "Light" ? "moon" : "sun") + ".svg"
-        ghost: true
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: ThemeEngine.mode = ThemeEngine.mode === "Light" ? "Dark" : "Light"
+        
+        Rectangle {
+            width: 40
+            height: 40
+            radius: SWMRadius.radiusLg
+            color: ThemeEngine.primary
+            
+            SWMIcon {
+                anchors.centerIn: parent
+                source: "file:///" + bootstrap.appDir + "/../resources/icons/zap.svg"
+                size: 24
+                color: SWMColors.white
+            }
+        }
+        
+        Text {
+            text: "SWM Desk"
+            font.family: SWMTypography.family
+            font.pixelSize: SWMTypography.h2
+            font.weight: SWMTypography.weightBold
+            color: ThemeEngine.primary
         }
     }
     
-    IconButton {
-        iconSource: "file:///" + bootstrap.appDir + "/../resources/icons/bell.svg"
-        ghost: true
+    Item { Layout.fillWidth: true }
+    
+    RowLayout {
+        spacing: SWMSpacing.space12
+        Layout.alignment: Qt.AlignCenter
+        
+        Repeater {
+            model: ListModel {
+                ListElement { name: "dashboard"; label: "Dashboard"; icon: "home" }
+                ListElement { name: "studio"; label: "Studio"; icon: "monitor" }
+                ListElement { name: "library"; label: "Library"; icon: "box" }
+                ListElement { name: "store"; label: "Store"; icon: "shopping-bag" }
+            }
+            
+            delegate: Rectangle {
+                id: tabBtn
+                width: Math.max(130, tabLayout.implicitWidth + (SWMSpacing.space16 * 2))
+                height: 44
+                radius: SWMRadius.radiusFull
+                color: root.activeTab === model.name ? ThemeEngine.primary : SWMColors.white
+                
+                border.color: root.activeTab === model.name ? "transparent" : ThemeEngine.border
+                border.width: 1
+                
+                RowLayout {
+                    id: tabLayout
+                    anchors.centerIn: parent
+                    spacing: SWMSpacing.space8
+                    
+                    SWMIcon {
+                        source: "file:///" + bootstrap.appDir + "/../resources/icons/" + model.icon + ".svg"
+                        size: 18
+                        color: root.activeTab === model.name ? SWMColors.white : ThemeEngine.primary
+                    }
+                    
+                    Text {
+                        text: model.label
+                        font.family: SWMTypography.family
+                        font.pixelSize: SWMTypography.body
+                        font.weight: SWMTypography.weightBold
+                        color: root.activeTab === model.name ? SWMColors.white : ThemeEngine.primary
+                    }
+                }
+                
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.tabChanged(model.name)
+                }
+            }
+        }
     }
     
-    PrimaryButton {
-        text: "Add Device"
-        iconSource: "file:///" + bootstrap.appDir + "/../resources/icons/plus.svg"
-        primary: true
-        Layout.leftMargin: SWMSpacing.space8
-        Layout.rightMargin: SWMSpacing.space8
-    }
+    Item { Layout.fillWidth: true }
     
-    Rectangle {
-        width: 40
-        height: 40
-        radius: SWMRadius.radiusFull
-        color: ThemeEngine.divider
+    RowLayout {
+        spacing: SWMSpacing.space12
         Layout.alignment: Qt.AlignVCenter
         
-        Text {
-            anchors.centerIn: parent
-            text: "A"
-            font.family: SWMTypography.family
-            font.pixelSize: SWMTypography.body
-            font.weight: SWMTypography.weightBold
-            color: ThemeEngine.textPrimary
+        Rectangle {
+            id: accountBtn
+            width: accountLayout.implicitWidth + (SWMSpacing.space16 * 2)
+            height: 44
+            radius: SWMRadius.radiusFull
+            color: SWMColors.white
+            border.color: ThemeEngine.border
+            border.width: 1
+            
+            RowLayout {
+                id: accountLayout
+                anchors.centerIn: parent
+                spacing: SWMSpacing.space8
+                
+                SWMIcon {
+                    source: "file:///" + bootstrap.appDir + "/../resources/icons/user.svg"
+                    size: 18
+                    color: ThemeEngine.primary
+                }
+                
+                Text {
+                    text: "Account"
+                    font.family: SWMTypography.family
+                    font.pixelSize: SWMTypography.body
+                    font.weight: SWMTypography.weightBold
+                    color: ThemeEngine.primary
+                }
+            }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+            }
+        }
+        
+        Rectangle {
+            width: 44
+            height: 44
+            radius: SWMRadius.radiusFull
+            color: SWMColors.white
+            border.color: ThemeEngine.border
+            border.width: 1
+            
+            SWMIcon {
+                anchors.centerIn: parent
+                source: "file:///" + bootstrap.appDir + "/../resources/icons/settings.svg"
+                size: 20
+                color: ThemeEngine.primary
+            }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+            }
         }
     }
 }

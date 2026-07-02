@@ -5,13 +5,11 @@ import foundation
 QtObject {
     id: root
     
-    // Modes: "System", "Light", "Dark", "OLED"
     property string mode: "Light"
     
     readonly property bool isDark: mode === "Dark" || mode === "OLED"
     
-    // Semantic Colors
-    readonly property color background: isDark ? SWMColors.gray900 : SWMColors.purple50
+    readonly property color background: isDark ? SWMColors.gray900 : "#e5e7eb"
     readonly property color surface: isDark ? SWMColors.gray800 : SWMColors.white
     
     readonly property color textPrimary: isDark ? SWMColors.white : SWMColors.gray900
