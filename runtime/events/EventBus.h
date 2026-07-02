@@ -12,14 +12,14 @@ public:
     EventBus();
     ~EventBus() override;
 
-    void publish(RuntimeEvent event, const std::string &payload) override;
-    SubscriptionToken subscribe(RuntimeEvent event, std::function<void(const std::string&)> callback) override;
+    void publish(RuntimeEvent event, const std::any &payload) override;
+    SubscriptionToken subscribe(RuntimeEvent event, std::function<void(const std::any&)> callback) override;
     void unsubscribe(const SubscriptionToken &token) override;
 
 private:
     struct Subscriber {
         SubscriptionToken token;
-        std::function<void(const std::string&)> callback;
+        std::function<void(const std::any&)> callback;
     };
 
     std::mutex busMutex;

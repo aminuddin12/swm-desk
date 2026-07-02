@@ -6,8 +6,8 @@ EventBus::EventBus() : tokenCounter(1) {
 EventBus::~EventBus() {
 }
 
-void EventBus::publish(RuntimeEvent event, const std::string &payload) {
-    std::vector<std::function<void(const std::string&)>> callbacks;
+void EventBus::publish(RuntimeEvent event, const std::any &payload) {
+    std::vector<std::function<void(const std::any&)>> callbacks;
     {
         std::lock_guard<std::mutex> lock(busMutex);
         auto it = subscribers.find(event);
@@ -22,7 +22,7 @@ void EventBus::publish(RuntimeEvent event, const std::string &payload) {
     }
 }
 
-SubscriptionToken EventBus::subscribe(RuntimeEvent event, std::function<void(const std::string&)> callback) {
+SubscriptionToken EventBus::subscribe(RuntimeEvent event, std::function<void(const std::any&)> callback) {
     std::lock_guard<std::mutex> lock(busMutex);
     SubscriptionToken token{tokenCounter.fetch_add(1)};
     subscribers[event].push_back({token, callback});

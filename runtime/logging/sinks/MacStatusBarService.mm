@@ -1,8 +1,10 @@
 #import "MacStatusBarService.h"
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
+#include "../LogEntry.h"
 #include <QCoreApplication>
 #include <QMetaObject>
+#include "../../bootstrap/WindowId.h"
 
 @interface MacStatusBarServiceHandler : NSObject
 @property (assign) MacStatusBarService *service;
@@ -18,20 +20,26 @@
 }
 - (void)onClearLogs:(id)sender {
     (void)sender;
+    if (_service) {
+        _service->publishClearLogs();
+    }
 }
 - (void)onOpenLogViewer:(id)sender {
     (void)sender;
+    if (_service) {
+        _service->publishOpenLogViewer();
+    }
 }
 @end
 
 MacStatusBarService::MacStatusBarService(std::shared_ptr<IEventBus> eventBus)
     : bus(eventBus), statusItem(nullptr), menuHandler(nullptr) {
     recentLogs = {
-        "Application Started",
-        "Runtime Initialized",
-        "Logger Ready",
-        "Configuration Loaded",
-        "UI Started"
+        "20:00:12  [INFO]  Runtime  Application Started",
+        "20:00:12  [INFO]  Runtime  Runtime Initialized",
+        "20:00:12  [INFO]  Runtime  Logger Ready",
+        "20:00:12  [INFO]  Runtime  Configuration Loaded",
+        "20:00:12  [INFO]  Runtime  UI Started"
     };
 }
 
@@ -54,9 +62,38 @@ void MacStatusBarService::initialize() {
 
 void MacStatusBarService::start() {
     if (bus) {
-        token = bus->subscribe(RuntimeEvent::LogAdded, [this](const std::string &payload) {
-            QMetaObject::invokeMethod(QCoreApplication::instance(), [this, payload]() {
-                onLogAdded(payload);
+        token = bus->subscribe(RuntimeEvent::LogAdded, [this](const std::any &payload) {
+            auto entry = std::any_cast<std::shared_ptr<LogEntry>>(payload);
+            QMetaObject::invokeMethod(QCoreApplication::instance(), [this, entry]() {
+                std::string timeStr = entry->timestamp.size() >= 19 ? entry->timestamp.substr(11, 8) : entry->timestamp;
+                std::string levelStr;
+                switch (entry->level) {
+                    case LogLevel::Trace: levelStr = "TRACE"; break;
+                    case LogLevel::Debug: levelStr = "DEBUG"; break;
+                    case LogLevel::Info: levelStr = "INFO"; break;
+                    case LogLevel::Success: levelStr = "SUCCESS"; break;
+                    case LogLevel::Warning: levelStr = "WARN"; break;
+                    case LogLevel::Error: levelStr = "ERROR"; break;
+                    case LogLevel::Critical: levelStr = "CRITICAL"; break;
+                }
+                std::string catStr;
+                switch (entry->category) {
+                    case LogCategory::Runtime: catStr = "Runtime"; break;
+                    case LogCategory::OBS: catStr = "OBS"; break;
+                    case LogCategory::UI: catStr = "UI"; break;
+                    case LogCategory::Plugin: catStr = "Plugin"; break;
+                    case LogCategory::Marketplace: catStr = "Marketplace"; break;
+                }
+                std::string logMsg = timeStr + "  [" + levelStr + "]  " + catStr + "  " + entry->message;
+                onLogAdded(logMsg);
+            }, Qt::QueuedConnection);
+        });
+
+        tokenCleared = bus->subscribe(RuntimeEvent::MemoryLogsCleared, [this](const std::any &payload) {
+            (void)payload;
+            QMetaObject::invokeMethod(QCoreApplication::instance(), [this]() {
+                recentLogs.clear();
+                updateMenu();
             }, Qt::QueuedConnection);
         });
     }
@@ -65,6 +102,7 @@ void MacStatusBarService::start() {
 void MacStatusBarService::stop() {
     if (bus) {
         bus->unsubscribe(token);
+        bus->unsubscribe(tokenCleared);
     }
 }
 
@@ -79,6 +117,18 @@ void MacStatusBarService::shutdown() {
         MacStatusBarServiceHandler *handler = (__bridge_transfer MacStatusBarServiceHandler *)menuHandler;
         (void)handler;
         menuHandler = nullptr;
+    }
+}
+
+void MacStatusBarService::publishClearLogs() {
+    if (bus) {
+        bus->publish(RuntimeEvent::ClearMemoryLogs, std::any());
+    }
+}
+
+void MacStatusBarService::publishOpenLogViewer() {
+    if (bus) {
+        bus->publish(RuntimeEvent::WindowRequest, WindowCommand{WindowId::LogViewer, WindowAction::Show});
     }
 }
 

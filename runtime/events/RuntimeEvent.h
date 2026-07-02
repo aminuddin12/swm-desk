@@ -2,7 +2,13 @@
 #define RUNTIMEEVENT_H
 
 enum class RuntimeEvent {
-    LogAdded
+    LogAdded,
+    ClearMemoryLogs,
+    MemoryLogsCleared,
+    WindowRequest,
+    ReloadUI,
+    TaskChanged,
+    NotificationChanged
 };
 
 #endif

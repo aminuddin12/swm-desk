@@ -18,6 +18,7 @@ public:
     void setFilters(LogLevel minLevel, const std::vector<LogCategory> &categories) override;
 
     std::vector<LogEntry> getEntries() const;
+    void clear();
 
 private:
     std::mutex sinkMutex;

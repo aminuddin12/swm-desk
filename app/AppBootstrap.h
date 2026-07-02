@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 
+class LogExportService;
+
 class AppBootstrap : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString appDir READ getAppDir CONSTANT)
@@ -17,6 +19,7 @@ public:
 
 private:
     QQmlApplicationEngine qmlEngine;
+    LogExportService *logExport = nullptr;
 };
 
 #endif

@@ -3,10 +3,14 @@ project(SwDeskApp VERSION 1.0.0 LANGUAGES CXX OBJCXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_definitions(SWM_ENABLE_RUNTIME_DIAGNOSTICS=1)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
+list(APPEND CMAKE_PREFIX_PATH "/Users/aminuddinadl/qt/6.5.3/macos")
 
 find_package(Qt6 COMPONENTS Quick QuickControls2 Widgets Sql Svg REQUIRED)
 
@@ -50,6 +54,42 @@ set(SRC_FILES
     runtime/bootstrap/RuntimeContext.cpp
     runtime/bootstrap/RuntimeBootstrap.h
     runtime/bootstrap/RuntimeBootstrap.cpp
+    runtime/logging/LogRepository.h
+    runtime/logging/LogRepository.cpp
+    runtime/logging/LogStatistics.h
+    runtime/logging/LogStatistics.cpp
+    runtime/logging/LogExportService.h
+    runtime/logging/LogExportService.cpp
+    runtime/logging/LogListModel.h
+    runtime/logging/LogListModel.cpp
+    runtime/bootstrap/WindowManager.h
+    runtime/bootstrap/WindowManager.cpp
+    runtime/bootstrap/WindowFactory.h
+    runtime/bootstrap/WindowFactory.cpp
+    app/menu/ApplicationMenuBuilder.h
+    app/menu/ApplicationMenuBuilder.cpp
+    runtime/tasks/contracts/TaskId.h
+    runtime/tasks/contracts/TaskState.h
+    runtime/tasks/contracts/TaskCategory.h
+    runtime/tasks/contracts/TaskProgress.h
+    runtime/tasks/contracts/TaskSnapshot.h
+    runtime/tasks/contracts/TaskRetentionPolicy.h
+    runtime/tasks/contracts/TaskHandle.h
+    runtime/tasks/contracts/TaskHandle.cpp
+    runtime/notifications/NotificationRepository.cpp
+    runtime/notifications/NotificationService.cpp
+    runtime/notifications/NotificationStatistics.cpp
+    runtime/notifications/NotificationListModel.cpp
+    runtime/notifications/contracts/NotificationHandle.cpp
+    runtime/diagnostics/RuntimeDiagnostics.cpp
+    runtime/tasks/TaskRepository.h
+    runtime/tasks/TaskRepository.cpp
+    runtime/tasks/TaskService.h
+    runtime/tasks/TaskService.cpp
+    runtime/tasks/TaskStatistics.h
+    runtime/tasks/TaskStatistics.cpp
+    runtime/tasks/TaskListModel.h
+    runtime/tasks/TaskListModel.cpp
 )
 
 if(APPLE)

@@ -3,29 +3,28 @@
 
 MemorySink::MemorySink(std::shared_ptr<IEventBus> eventBus, int capacityLimit)
     : bus(eventBus), maxCapacity(capacityLimit) {
+    if (bus) {
+        bus->subscribe(RuntimeEvent::ClearMemoryLogs, [this](const std::any &payload) {
+            (void)payload;
+            clear();
+        });
+    }
 }
 
 MemorySink::~MemorySink() {
 }
 
 void MemorySink::log(const LogEntry &entry) {
-    std::string formattedPayload;
+    auto sharedEntry = std::make_shared<LogEntry>(entry);
     {
         std::lock_guard<std::mutex> lock(sinkMutex);
-        if (logFormatter) {
-            formattedPayload = logFormatter->format(entry);
-        } else {
-            formattedPayload = entry.message;
-        }
-
         if (maxCapacity > 0 && static_cast<int>(logEntries.size()) >= maxCapacity) {
             logEntries.erase(logEntries.begin());
         }
-        logEntries.push_back(entry);
+        logEntries.push_back(*sharedEntry);
     }
-
     if (bus) {
-        bus->publish(RuntimeEvent::LogAdded, formattedPayload);
+        bus->publish(RuntimeEvent::LogAdded, sharedEntry);
     }
 }
 
@@ -57,4 +56,9 @@ std::vector<LogEntry> MemorySink::getEntries() const {
     auto *mutableThis = const_cast<MemorySink*>(this);
     std::lock_guard<std::mutex> lock(mutableThis->sinkMutex);
     return logEntries;
+}
+
+void MemorySink::clear() {
+    std::lock_guard<std::mutex> lock(sinkMutex);
+    logEntries.clear();
 }
