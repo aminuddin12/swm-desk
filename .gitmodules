@@ -1,3 +1,4 @@
 [submodule "core/engines/graphics"]
 	path = core/engines/graphics
-	url = https://github.com/aminuddin12/swm-graphics-engine.git
+	url = ../swm-graphics-engine.git
+	branch = main
