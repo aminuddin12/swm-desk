@@ -1,3 +1,3 @@
 [submodule "core/engines/graphics"]
 	path = core/engines/graphics
-	url = /Users/aminuddinadl/Code/Tauri_App/swm-graphics-engine
+	url = https://github.com/aminuddin12/swm-graphics-engine.git
