@@ -22,6 +22,8 @@
 #if SWM_ENABLE_RUNTIME_DIAGNOSTICS
 #include "../diagnostics/RuntimeDiagnostics.h"
 #endif
+#include "../graphics/GraphicsRuntime.h"
+#include "../graphics/ValidationSceneBuilder.h"
 
 std::shared_ptr<RuntimeContext> RuntimeBootstrap::bootstrap() {
     std::shared_ptr<IConfiguration> config = std::make_shared<Configuration>();
@@ -104,6 +106,13 @@ std::shared_ptr<RuntimeContext> RuntimeBootstrap::bootstrap() {
     diagnostics->initialize();
     diagnostics->start();
 #endif
+    
+    // Register Graphics Runtime
+    auto sceneBuilder = std::make_shared<swm::runtime::graphics::ValidationSceneBuilder>();
+    auto graphicsRuntime = std::make_shared<swm::runtime::graphics::GraphicsRuntime>(bus, sceneBuilder);
+    registry.registerService("GraphicsRuntime", graphicsRuntime);
+    graphicsRuntime->initialize();
+    graphicsRuntime->start();
     
     return context;
 }

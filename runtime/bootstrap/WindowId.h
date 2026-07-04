@@ -5,7 +5,8 @@ enum class WindowId {
     Dashboard,
     LogViewer,
     Settings,
-    About
+    About,
+    GraphicsPreview
 };
 
 enum class WindowAction {

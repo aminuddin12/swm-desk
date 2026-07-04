@@ -82,6 +82,14 @@ void ApplicationMenuBuilder::build(std::shared_ptr<IEventBus> eventBus) {
     windowMenu->addAction("Minimize");
     windowMenu->addAction("Zoom");
     windowMenu->addSeparator();
+    
+    QAction *graphicsPreviewAction = windowMenu->addAction("Graphics Preview");
+    graphicsPreviewAction->setShortcut(QKeySequence("Ctrl+Shift+G"));
+    QObject::connect(graphicsPreviewAction, &QAction::triggered, [eventBus]() {
+        eventBus->publish(RuntimeEvent::WindowRequest, WindowCommand{WindowId::GraphicsPreview, WindowAction::Show});
+    });
+
+    windowMenu->addSeparator();
     windowMenu->addAction("Bring All To Front");
 
     QMenu *helpMenu = menuBar->addMenu("Help");

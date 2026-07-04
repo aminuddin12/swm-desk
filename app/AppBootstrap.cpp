@@ -12,6 +12,9 @@
 #include "../runtime/notifications/NotificationListModel.h"
 #include "../runtime/tasks/TaskService.h"
 #include "../runtime/tasks/TaskRepository.h"
+#include "../runtime/graphics/GraphicsRuntime.h"
+#include "../runtime/graphics/GraphicsStatistics.h"
+#include "../runtime/graphics/GraphicsPreviewItem.h"
 #include "menu/ApplicationMenuBuilder.h"
 #include <QCoreApplication>
 #include <QQmlContext>
@@ -62,6 +65,12 @@ void AppBootstrap::bootstrap() {
     
     qmlEngine.rootContext()->setContextProperty("taskStats", taskStats.get());
     qmlEngine.rootContext()->setContextProperty("taskListModel", taskListModel.get());
+
+    auto graphicsRuntime = std::any_cast<std::shared_ptr<swm::runtime::graphics::GraphicsRuntime>>(registry.resolve("GraphicsRuntime"));
+    auto graphicsStats = new swm::runtime::graphics::GraphicsStatistics(graphicsRuntime.get(), this);
+    qmlRegisterType<swm::runtime::graphics::GraphicsPreviewItem>("SWM.Graphics", 1, 0, "GraphicsPreviewItem");
+    qmlEngine.rootContext()->setContextProperty("graphicsRuntime", graphicsRuntime.get());
+    qmlEngine.rootContext()->setContextProperty("graphicsStats", graphicsStats);
 
     logger->info("Application Started", LogCategory::Runtime);
     logger->info("Runtime Initialized", LogCategory::Runtime);

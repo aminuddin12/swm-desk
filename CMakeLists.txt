@@ -3,7 +3,7 @@ project(SwDeskApp VERSION 1.0.0 LANGUAGES CXX OBJCXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_definitions(SWM_ENABLE_RUNTIME_DIAGNOSTICS=1)
+add_compile_definitions(SWM_ENABLE_RUNTIME_DIAGNOSTICS=0)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_AUTOMOC ON)
@@ -90,7 +90,39 @@ set(SRC_FILES
     runtime/tasks/TaskStatistics.cpp
     runtime/tasks/TaskListModel.h
     runtime/tasks/TaskListModel.cpp
+    
+    runtime/graphics/contracts/GraphicsFrameSnapshot.h
+    runtime/graphics/contracts/RenderRequest.h
+    runtime/graphics/contracts/RenderSessionId.h
+    runtime/graphics/contracts/ISceneBuilder.h
+    runtime/graphics/contracts/IGraphicsResourceService.h
+    runtime/graphics/RenderSession.h
+    runtime/graphics/RenderSession.cpp
+    runtime/graphics/RenderSessionManager.h
+    runtime/graphics/RenderSessionManager.cpp
+    runtime/graphics/RenderScheduler.h
+    runtime/graphics/RenderScheduler.cpp
+    runtime/graphics/GraphicsEngineService.h
+    runtime/graphics/GraphicsEngineService.cpp
+    runtime/graphics/ValidationSceneBuilder.h
+    runtime/graphics/ValidationSceneBuilder.cpp
+    runtime/graphics/GraphicsResourceService.h
+    runtime/graphics/GraphicsResourceService.cpp
+    runtime/graphics/GraphicsRuntime.h
+    runtime/graphics/GraphicsRuntime.cpp
+    runtime/graphics/GraphicsStatistics.h
+    runtime/graphics/GraphicsStatistics.cpp
+    runtime/graphics/GraphicsPreviewItem.h
+    runtime/graphics/GraphicsPreviewItem.cpp
 )
+
+option(SWM_USE_INTERNAL_GRAPHICS_ENGINE "Use bundled graphics engine" ON)
+
+if(SWM_USE_INTERNAL_GRAPHICS_ENGINE)
+    add_subdirectory(core/engines/graphics)
+else()
+    find_package(swm_graphics_engine REQUIRED)
+endif()
 
 if(APPLE)
     list(APPEND SRC_FILES
@@ -112,6 +144,7 @@ target_link_libraries(SwDeskApp PRIVATE
     Qt6::Widgets
     Qt6::Sql
     Qt6::Svg
+    swm_graphics_engine
 )
 
 if(APPLE)

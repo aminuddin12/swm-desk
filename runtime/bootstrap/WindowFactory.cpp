@@ -13,6 +13,9 @@ QObject* WindowFactory::createWindow(WindowId id, QQmlApplicationEngine *engine,
         case WindowId::LogViewer:
             path = appDir + "/../ui/windows/LogViewerWindow.qml";
             break;
+        case WindowId::GraphicsPreview:
+            path = appDir + "/../ui/windows/GraphicsPreviewWindow.qml";
+            break;
         case WindowId::Settings:
             break;
         case WindowId::About:

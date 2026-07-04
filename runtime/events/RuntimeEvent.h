@@ -8,7 +8,8 @@ enum class RuntimeEvent {
     WindowRequest,
     ReloadUI,
     TaskChanged,
-    NotificationChanged
+    NotificationChanged,
+    GraphicsFrameAvailable
 };
 
 #endif
