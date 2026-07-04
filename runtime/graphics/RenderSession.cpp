@@ -55,7 +55,7 @@ void RenderSession::shutdown() {
 GraphicsFrameSnapshot RenderSession::render() {
     auto startTime = std::chrono::steady_clock::now();
 
-    auto frame = m_engineService.render(m_request.canvas);
+    auto frame = m_engineService.render(m_request.document);
 
     auto endTime = std::chrono::steady_clock::now();
     auto durationNs = static_cast<uint64_t>(

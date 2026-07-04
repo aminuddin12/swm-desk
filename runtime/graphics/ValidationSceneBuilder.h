@@ -7,7 +7,7 @@ namespace swm::runtime::graphics {
 
 class ValidationSceneBuilder : public ISceneBuilder {
 public:
-    std::shared_ptr<swm::graphics::Canvas> build() override;
+    std::shared_ptr<swm::scene::Document> build() override;
 };
 
 }

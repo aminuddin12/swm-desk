@@ -4,12 +4,12 @@
 #include <memory>
 #include <string>
 #include <cstdint>
+#include <swm/core/EngineStatistics.h>
 
-namespace swm::graphics {
-class GraphicsEngine;
-class Canvas;
-class Frame;
-enum class EngineBackend;
+namespace swm::scene { class Document; }
+namespace swm::graphics { 
+    class GraphicsEngine; 
+    class Frame; 
 }
 
 namespace swm::runtime::graphics {
@@ -23,7 +23,9 @@ public:
     void shutdown();
 
     std::shared_ptr<const swm::graphics::Frame> render(
-        const std::shared_ptr<swm::graphics::Canvas>& canvas);
+        const std::shared_ptr<swm::scene::Document>& document);
+
+    const swm::core::EngineStatistics& getStatistics() const;
 
     std::string getBackendName() const;
     std::string getEngineVersion() const;

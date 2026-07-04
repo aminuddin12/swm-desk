@@ -18,7 +18,7 @@ public:
 
     void paint(QPainter* painter) override;
 
-    void setRuntime(GraphicsRuntime* runtime);
+    Q_INVOKABLE void setRuntime(QObject* runtime);
     
     Q_INVOKABLE void setSessionId(quint64 id);
     Q_INVOKABLE void renderOnce();

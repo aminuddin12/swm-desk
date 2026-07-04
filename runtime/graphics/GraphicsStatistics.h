@@ -17,6 +17,9 @@ class GraphicsStatistics : public QObject {
     Q_PROPERTY(int resolutionHeight READ getResolutionHeight NOTIFY statisticsChanged)
     Q_PROPERTY(QString backendName READ getBackendName NOTIFY statisticsChanged)
     Q_PROPERTY(QString engineVersion READ getEngineVersion NOTIFY statisticsChanged)
+    Q_PROPERTY(int sceneNodeCount READ getSceneNodeCount NOTIFY statisticsChanged)
+    Q_PROPERTY(int renderNodeCount READ getRenderNodeCount NOTIFY statisticsChanged)
+    Q_PROPERTY(int commandCount READ getCommandCount NOTIFY statisticsChanged)
 
 public:
     explicit GraphicsStatistics(GraphicsRuntime* runtime, QObject* parent = nullptr);
@@ -29,6 +32,10 @@ public:
     int getResolutionHeight() const;
     QString getBackendName() const;
     QString getEngineVersion() const;
+    
+    int getSceneNodeCount() const;
+    int getRenderNodeCount() const;
+    int getCommandCount() const;
 
 public slots:
     void onRuntimeStatisticsChanged();

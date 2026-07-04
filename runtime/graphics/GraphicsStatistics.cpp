@@ -44,6 +44,18 @@ QString GraphicsStatistics::getEngineVersion() const {
     return m_runtime ? QString::fromStdString(m_runtime->getEngineVersion()) : QString();
 }
 
+int GraphicsStatistics::getSceneNodeCount() const {
+    return m_runtime ? static_cast<int>(m_runtime->getSceneNodeCount()) : 0;
+}
+
+int GraphicsStatistics::getRenderNodeCount() const {
+    return m_runtime ? static_cast<int>(m_runtime->getRenderNodeCount()) : 0;
+}
+
+int GraphicsStatistics::getCommandCount() const {
+    return m_runtime ? static_cast<int>(m_runtime->getCommandCount()) : 0;
+}
+
 void GraphicsStatistics::onRuntimeStatisticsChanged() {
     emit statisticsChanged();
 }

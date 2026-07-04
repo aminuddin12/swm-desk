@@ -43,6 +43,11 @@ public:
     uint32_t getResolutionHeight() const;
     std::string getBackendName() const;
     std::string getEngineVersion() const;
+    
+    // Engine internals for metrics
+    uint64_t getSceneNodeCount() const;
+    uint64_t getRenderNodeCount() const;
+    uint64_t getCommandCount() const;
     quint64 getDefaultPreviewSessionId() const;
 
     GraphicsFrameSnapshot getLastSnapshot(RenderSessionId id) const;

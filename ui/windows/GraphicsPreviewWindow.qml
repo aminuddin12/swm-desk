@@ -67,6 +67,15 @@ Window {
                     Text { text: "Frame Count"; color: "#94a3b8"; font.pixelSize: 13 }
                     Text { text: graphicsStats ? graphicsStats.frameCount : "0"; color: "#f8fafc"; font.pixelSize: 13; font.weight: Font.Medium; Layout.fillWidth: true; elide: Text.ElideRight }
 
+                    Text { text: "Scene Nodes"; color: "#94a3b8"; font.pixelSize: 13 }
+                    Text { text: graphicsStats ? graphicsStats.sceneNodeCount : "0"; color: "#f8fafc"; font.pixelSize: 13; font.weight: Font.Medium; Layout.fillWidth: true; elide: Text.ElideRight }
+
+                    Text { text: "Render Nodes"; color: "#94a3b8"; font.pixelSize: 13 }
+                    Text { text: graphicsStats ? graphicsStats.renderNodeCount : "0"; color: "#f8fafc"; font.pixelSize: 13; font.weight: Font.Medium; Layout.fillWidth: true; elide: Text.ElideRight }
+
+                    Text { text: "Commands"; color: "#94a3b8"; font.pixelSize: 13 }
+                    Text { text: graphicsStats ? graphicsStats.commandCount : "0"; color: "#f8fafc"; font.pixelSize: 13; font.weight: Font.Medium; Layout.fillWidth: true; elide: Text.ElideRight }
+
                     Text { text: "Render Time"; color: "#94a3b8"; font.pixelSize: 13 }
                     Text { text: graphicsStats ? (graphicsStats.lastRenderDurationMs.toFixed(3) + " ms") : "0 ms"; color: "#f8fafc"; font.pixelSize: 13; font.weight: Font.Medium; Layout.fillWidth: true; elide: Text.ElideRight }
 

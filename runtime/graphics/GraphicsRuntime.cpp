@@ -37,7 +37,7 @@ void GraphicsRuntime::start() {
     }
 
     RenderRequest previewRequest;
-    previewRequest.canvas = m_sceneBuilder->build();
+    previewRequest.document = m_sceneBuilder->build();
     previewRequest.outputType = RenderOutputType::Preview;
     previewRequest.width = 1920;
     previewRequest.height = 1080;
@@ -142,6 +142,21 @@ std::string GraphicsRuntime::getBackendName() const {
 std::string GraphicsRuntime::getEngineVersion() const {
     if (m_engineService) return m_engineService->getEngineVersion();
     return "";
+}
+
+uint64_t GraphicsRuntime::getSceneNodeCount() const {
+    if (m_engineService) return m_engineService->getStatistics().render.sceneNodeCount.load();
+    return 0;
+}
+
+uint64_t GraphicsRuntime::getRenderNodeCount() const {
+    if (m_engineService) return m_engineService->getStatistics().render.renderNodeCount.load();
+    return 0;
+}
+
+uint64_t GraphicsRuntime::getCommandCount() const {
+    if (m_engineService) return m_engineService->getStatistics().render.commandCount.load();
+    return 0;
 }
 
 quint64 GraphicsRuntime::getDefaultPreviewSessionId() const {

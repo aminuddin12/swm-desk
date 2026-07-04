@@ -37,11 +37,12 @@ void GraphicsEngineService::shutdown() {
 }
 
 std::shared_ptr<const swm::graphics::Frame> GraphicsEngineService::render(
-    const std::shared_ptr<swm::graphics::Canvas>& canvas) {
+    const std::shared_ptr<swm::scene::Document>& document) {
     if (!m_engine) {
         return nullptr;
     }
-    return m_engine->render(canvas);
+    m_engine->load(document);
+    return m_engine->render();
 }
 
 std::string GraphicsEngineService::getBackendName() const {
@@ -60,4 +61,13 @@ uint32_t GraphicsEngineService::getHeight() const {
     return m_height;
 }
 
+const swm::core::EngineStatistics& GraphicsEngineService::getStatistics() const {
+    // Return empty stats if engine is not created yet
+    static swm::core::EngineStatistics emptyStats;
+    if (m_engine) {
+        return m_engine->getStatistics();
+    }
+    return emptyStats;
 }
+
+} // namespace swm::runtime::graphics

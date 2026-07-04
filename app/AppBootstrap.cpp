@@ -68,6 +68,7 @@ void AppBootstrap::bootstrap() {
 
     auto graphicsRuntime = std::any_cast<std::shared_ptr<swm::runtime::graphics::GraphicsRuntime>>(registry.resolve("GraphicsRuntime"));
     auto graphicsStats = new swm::runtime::graphics::GraphicsStatistics(graphicsRuntime.get(), this);
+    qmlRegisterUncreatableType<swm::runtime::graphics::GraphicsRuntime>("SWM.Graphics", 1, 0, "GraphicsRuntime", "Runtime created by C++");
     qmlRegisterType<swm::runtime::graphics::GraphicsPreviewItem>("SWM.Graphics", 1, 0, "GraphicsPreviewItem");
     qmlEngine.rootContext()->setContextProperty("graphicsRuntime", graphicsRuntime.get());
     qmlEngine.rootContext()->setContextProperty("graphicsStats", graphicsStats);

@@ -10,7 +10,8 @@ GraphicsPreviewItem::GraphicsPreviewItem(QQuickItem* parent)
     setRenderTarget(QQuickPaintedItem::FramebufferObject);
 }
 
-void GraphicsPreviewItem::setRuntime(GraphicsRuntime* runtime) {
+void GraphicsPreviewItem::setRuntime(QObject* runtimeObj) {
+    auto runtime = qobject_cast<swm::runtime::graphics::GraphicsRuntime*>(runtimeObj);
     if (m_runtime) {
         disconnect(m_runtime, &GraphicsRuntime::frameAvailable,
                    this, &GraphicsPreviewItem::onFrameAvailable);
@@ -52,9 +53,9 @@ void GraphicsPreviewItem::onFrameAvailable(RenderSessionId id) {
         return;
     }
 
-    const uint8_t* data = snapshot.frame->getData();
-    uint32_t width = snapshot.frame->getWidth();
-    uint32_t height = snapshot.frame->getHeight();
+    const uint8_t* data = snapshot.frame->data();
+    uint32_t width = snapshot.frame->width();
+    uint32_t height = snapshot.frame->height();
 
     // Zero-copy read wrapper
     m_currentImage = QImage(data, width, height, QImage::Format_RGBA8888).copy();
